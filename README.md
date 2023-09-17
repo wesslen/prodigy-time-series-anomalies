@@ -1,5 +1,7 @@
 ## Getting started
 
+> This is meant to be a dummy demo so the options have generic names. However, this could easily be modified when classifying anomolies in time series for other applications (e.g., temperature data, sales data, energy usage).
+
 Clone the repo
 
 Create a new `venv` with Prodigy:
@@ -24,10 +26,11 @@ python scripts/generate_plots.py "data/output_files/statistics.jsonl" 0.1 "data/
 Combined plots saved in data/output_images
 ```
 
+> This step will filter the partitioned time series to only plot those with a standard deviation larger than 0.1. Another threshold or metric than standard deviation can be used instead.
+
 Run Prodigy:
 ```
 (venv) $ make prodigy-images
-
 ```
 
 This will run this Prodigy command:
@@ -36,5 +39,3 @@ PRODIGY_LOGGING=verbose python -m prodigy classify-images data_anomaly ./data/ou
 ```
 
 ![](img/timeseries.gif)
-
-> This is meant to be a dummy demo so the options have generic names. However, this could easily be modified when classifying anomolies in time series for other applications (e.g., temperature data, sales data, energy usage).

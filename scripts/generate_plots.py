@@ -22,21 +22,21 @@ def generate_plots(
         os.makedirs(output_images, exist_ok=True)
 
         # Read the JSONL statistics file
-        stats_records = srsly.read_jsonl(input_jsonl)
-
-        # Filter records based on the threshold
-        filtered_records = [record for record in stats_records if record['stdev'] > threshold]
+        stats_records = list(srsly.read_jsonl(input_jsonl))
 
         # Load all CSV files and combine them for the overall plot
         all_data = pd.DataFrame()
-        for record in filtered_records:
+        for record in stats_records:
             file_name = record['file']
             csv_file_path = os.path.join(input_files, file_name)
             df = pd.read_csv(csv_file_path)
             all_data = pd.concat([all_data, df])
 
-        # Convert the 'Date' column to a datetime type
-        all_data['Date'] = pd.to_datetime(all_data['Date'])
+        # Filter records based on the threshold
+        filtered_records = [record for record in stats_records if record['stdev'] > threshold]
+
+        # Convert the 'timestamp' column to a timestamptime type
+        # all_data['timestamp'] = pd.to_timestamptime(all_data['timestamp'])
 
         # Generate and save individual plots for filtered records with formatted x-axis labels
         for i, record in enumerate(filtered_records):
@@ -48,10 +48,10 @@ def generate_plots(
             
             # Plot the individual filtered record
             plt.subplot(211)
-            plt.plot(df['Date'], df['Price'])
-            plt.xlabel('Date')
-            plt.ylabel('Price')
-            plt.title(f'Plot for {file_name}')
+            plt.plot(df['timestamp'], df['meter_reading'])
+            plt.xlabel('timestamp')
+            plt.ylabel('meter_reading')
+            plt.title(f'Plot for Day {i}')
             
             # Format x-axis labels to show only five labels
             ax = plt.gca()
@@ -59,12 +59,15 @@ def generate_plots(
 
             # Plot the overall time series
             plt.subplot(212)
-            plt.plot(all_data['Date'], all_data['Price'], color='blue')
-            plt.xlabel('Date')
-            plt.ylabel('Price')
-            plt.title('Overall Time Series Plot')
-            plt.fill_between(all_data['Date'], all_data['Price'].min(), all_data['Price'].max(), where=(all_data['Date']>record['start']) & (all_data['Date']<=record['end']), alpha=0.2, color='blue', label='Shading')
+            plt.plot(all_data['timestamp'], all_data['meter_reading'], color='blue')
+            plt.xlabel('timestamp')
+            plt.ylabel('meter_reading')
+            plt.title('Annual Temperature Plot')
+            plt.fill_between(all_data['timestamp'], all_data['meter_reading'].min(), all_data['meter_reading'].max(), where=(all_data['timestamp']>record['start']) & (all_data['timestamp']<=record['end']), alpha=0.2, color='blue', label='Shading')
             
+            ax = plt.gca()
+            ax.xaxis.set_major_locator(ticker.MaxNLocator(nbins=12))
+
             plt.tight_layout()
             
             # Save the combined plot with subplots as a JPG file

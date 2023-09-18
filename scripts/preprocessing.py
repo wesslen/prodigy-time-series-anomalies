@@ -39,14 +39,14 @@ def partition_csv(input_file: str, output_folder: str, partition_window: int):
             partition_df.to_csv(output_file, index=False)
 
             # Calculate the standard deviation for the 'Price' values
-            stdev = partition_df['Price'].std()
+            stdev = partition_df['meter_reading'].std()
 
             # Create a dictionary for the statistics
             stats = {
                 "id": i,
                 "file": f'partition_{i}.csv',
-                "start": partition_df['Date'].iloc[0],
-                "end": partition_df['Date'].iloc[-1],
+                "start": partition_df['timestamp'].iloc[0],
+                "end": partition_df['timestamp'].iloc[-1],
                 "stdev": stdev
             }
 

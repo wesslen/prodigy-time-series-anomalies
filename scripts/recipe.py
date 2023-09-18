@@ -10,9 +10,9 @@ def classify_images(
         ):
 
     OPTIONS = [
-        {"id": 0, "text": "Option A"},
-        {"id": 1, "text": "Option B"},
-        {"id": 2, "text": "Option C"},
+        {"id": 0, "text": "Anamoly"},
+        {"id": 1, "text": "Normal"},
+        {"id": 2, "text": "Missing"},
         {"id": -1, "text": "Other"}
     ]
 

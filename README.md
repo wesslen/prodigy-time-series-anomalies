@@ -38,4 +38,5 @@ This will run this Prodigy command:
 PRODIGY_LOGGING=verbose python -m prodigy classify-images data_anomaly ./data/output_images -F scripts/recipe.py
 ```
 
+
 ![](img/timeseries.gif)
